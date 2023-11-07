@@ -6,34 +6,23 @@ GPIO.setwarnings(False)
 
 trigger = 26
 echo = 16
-lamp_pin = 4  # Ganti dengan pin yang sesuai untuk lampu
 
+# Definisikan pin untuk tiga lampu
+lamp_pin_1 = Ganti Dek
+lamp_pin_2 = Ini Lagi
+lamp_pin_3 = ini Juga
+
+# Inisialisasi GPIO untuk masing-masing lampu
 GPIO.setup(trigger, GPIO.OUT)
 GPIO.setup(echo, GPIO.IN)
-GPIO.setup(lamp_pin, GPIO.OUT)
+GPIO.setup(lamp_pin_1, GPIO.OUT)
+GPIO.setup(lamp_pin_2, GPIO.OUT)
+GPIO.setup(lamp_pin_3, GPIO.OUT)
 
 GPIO.output(trigger, GPIO.LOW)
 
 def get_range():
-    GPIO.output(trigger, True)
-    time.sleep(0.00001)
-    GPIO.output(trigger, False)
-    timeout_counter = int(time.time())
-    start = time.time()
-
-    while GPIO.input(echo) == 0 and (int(time.time()) - timeout_counter) < 3:
-        start = time.time()
-        timeout_counter = int(time.time())
-
-    stop = time.time()
-
-    while GPIO.input(echo) == 1 and (int(time.time()) - timeout_counter) < 3:
-        stop = time.time()
-
-    elapsed = stop - start
-    distance = elapsed * 34320
-    distance = distance / 2
-    return distance
+    # Fungsi untuk mengukur jarak, seperti sebelumnya
 
 try:
     while True:
@@ -41,9 +30,15 @@ try:
         print('Jarak terukur: %.2f Cm' % jarak)
 
         if jarak < 8:
-            GPIO.output(lamp_pin, GPIO.HIGH)  # Nyalakan lampu
+            # Nyalakan semua lampu jika jarak kurang dari 8 cm
+            GPIO.output(lamp_pin_1, GPIO.HIGH)
+            GPIO.output(lamp_pin_2, GPIO.HIGH)
+            GPIO.output(lamp_pin_3, GPIO.HIGH)
         else:
-            GPIO.output(lamp_pin, GPIO.LOW)  # Matikan lampu
+            # Matikan semua lampu jika jarak lebih dari atau sama dengan 8 cm
+            GPIO.output(lamp_pin_1, GPIO.LOW)
+            GPIO.output(lamp_pin_2, GPIO.LOW)
+            GPIO.output(lamp_pin_3, GPIO.LOW)
 
         time.sleep(1)
 
